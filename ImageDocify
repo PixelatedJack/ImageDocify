@@ -1,0 +1,35 @@
+@echo off
+
+setlocal enableextensions
+set "folder="
+
+:loop
+set /p "folder=Enter the directory of the images: "
+if not defined folder goto :loop
+
+if not exist "%folder%" (
+    echo Folder does not exist!
+    goto :loop
+)
+
+set "png_files=%folder%\*.png"
+set "other_files=%folder%\*.^(png^)"
+
+if not exist "%png_files%" (
+    echo There are no PNG files in this directory!
+    goto :loop
+)
+
+if exist "%other_files%" (
+    echo This program only accepts PNG files!
+    goto :loop
+)
+
+set "text=Training text"
+
+for %%f in (%png_files%) do (
+    echo %text% %%~nf > "%folder%\%%~nf.txt"
+)
+
+echo Done!
+pause >nul
